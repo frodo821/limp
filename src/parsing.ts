@@ -1,4 +1,4 @@
-import { canonicalizeLineBreaks } from '.';
+import { canonicalizeLineBreaks, dedent } from '.';
 import { splitNextDedent } from './strparsing';
 
 export interface BaseNode<T extends string, K> {
@@ -279,7 +279,7 @@ function parseBlock(src: TokenStart, parent: Node): Node {
     ...parseRoleNameArgs(nameline.slice(2, nameline.length - 1)),
   };
 
-  parse(src.matched.slice(nameAt + 1), self);
+  parse(dedent(src.matched.slice(nameAt + nameline.length + 2)), self);
 
   return self;
 }
