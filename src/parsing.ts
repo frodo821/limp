@@ -132,7 +132,7 @@ function parse(src: string, parent: Node): number {
 
     index += token.span;
 
-    src = src.slice(token.span);
+    src = src.slice(token.span + token.pos);
   }
 
   return index;
