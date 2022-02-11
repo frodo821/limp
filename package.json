@@ -1,0 +1,22 @@
+{
+  "name": "limp",
+  "version": "1.0.0",
+  "description": "lightweight extensible document markup language",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "npm run build -- --platform=node --format=cjs && mocha",
+    "build": "esbuild --outfile=dist/main.js --bundle --minify src/index.ts"
+  },
+  "keywords": [
+    "documentation",
+    "markup"
+  ],
+  "author": "frodo821",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "esbuild": "^0.14.21",
+    "mocha": "^9.2.0",
+    "typescript": "^4.5.5"
+  }
+}

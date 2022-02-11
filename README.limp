@@ -1,0 +1,20 @@
+Limp\: the lightweight and extensible document markup language
+==============================================================
+
+Limp is a lightweight markup language for creating documents.
+
+Table of Contents
+-----------------
+
+::list~
+
+  ::item~
+    :ref(#intro): :underlined: Introduction ::
+
+
+:id(intro):Introduction:
+------------------------
+
+::*code~
+
+  this is code block
