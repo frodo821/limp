@@ -313,6 +313,10 @@ function parseTitle(src: TokenStart, parent: Node): Node {
 }
 
 function parseInline(src: TokenStart, parent: Node): Node[] {
+  if (!src.matched.trim()) {
+    return [];
+  }
+
   let matched = src.matched;
   let index = 0;
   let line = src.line!;
