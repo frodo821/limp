@@ -385,7 +385,7 @@ function parseInline(src: TokenStart, parent: Node): Node[] {
       break;
     }
 
-    const nameArgs = matched.slice(0, bodyStart);
+    const nameArgs = matched.slice(0, bodyStart - 1);
 
     matched = matched.slice(bodyStart);
     const bodyEnd = matched.search(/(?<!\\):/);
