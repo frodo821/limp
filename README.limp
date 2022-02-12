@@ -9,10 +9,10 @@ Table of Contents
 ::list~
 
   ::item~
-    :ref(#intro): :underlined: Introduction ::
+    :ref(#intro)::underlined:Introduction;;
 
 
-:id(intro):Introduction:
+:id(intro):Introduction;
 ------------------------
 
 ::*code~
