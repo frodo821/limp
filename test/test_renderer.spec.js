@@ -26,10 +26,10 @@ describe('test renderers', function () {
 
   describe('test ref role', function () {
     it('should render ref with <a></a> tag', function () {
-      expect(self.compile(":ref(#):text;").slice(23)).to.equal('<a href="#" target="_self">text</a></div>');
-      expect(self.compile(":ref(url=https\\://google.co.jp/):text;").slice(23)).to.equal('<a href="https://google.co.jp/" target="_self">text</a></div>');
-      expect(self.compile(":ref(#, _blank):text;").slice(23)).to.equal('<a href="#" target="_blank">text</a></div>');
-      expect(self.compile(":ref(url=https\\://google.co.jp/, target=_blank):text;").slice(23)).to.equal('<a href="https://google.co.jp/" target="_blank">text</a></div>');
+      expect(self.compile(":ref(#):text;").slice(23)).to.equal('<a href="#" target="_self" class="limp-inline">text</a></div>');
+      expect(self.compile(":ref(url=https\\://google.co.jp/):text;").slice(23)).to.equal('<a href="https://google.co.jp/" target="_self" class="limp-inline">text</a></div>');
+      expect(self.compile(":ref(#, _blank):text;").slice(23)).to.equal('<a href="#" target="_blank" class="limp-inline">text</a></div>');
+      expect(self.compile(":ref(url=https\\://google.co.jp/, target=_blank):text;").slice(23)).to.equal('<a href="https://google.co.jp/" target="_blank" class="limp-inline">text</a></div>');
     });
   });
 });
