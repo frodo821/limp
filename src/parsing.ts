@@ -1,4 +1,5 @@
 import { canonicalizeLineBreaks, dedent } from '.';
+import { reverse } from './arrayutils';
 import { splitNextDedent } from './strparsing';
 
 export interface BaseNode<T extends string, K> {
@@ -9,18 +10,22 @@ export interface BaseNode<T extends string, K> {
   children: K[];
 }
 
-export type Node =
+export type LimpNode =
   | (BaseNode<'text', never> & { self: string })
-  | (BaseNode<'role', Node> & { name: string; args: { [key: string]: string } })
-  | BaseNode<'title', Node>
-  | (BaseNode<'block_role', Node> & {
+  | (BaseNode<'role', LimpNode> & {
       name: string;
       args: { [key: string]: string };
       unparsed: boolean;
     })
-  | BaseNode<'root', Node>;
+  | BaseNode<'title', LimpNode>
+  | (BaseNode<'block_role', LimpNode> & {
+      name: string;
+      args: { [key: string]: string };
+      unparsed: boolean;
+    })
+  | BaseNode<'root', LimpNode>;
 
-type Keys = Node['type'];
+type Keys = LimpNode['type'];
 
 type TokenStart = {
   type: Keys;
@@ -39,8 +44,8 @@ const Inclusions: { [key in Keys]: Keys[] } = {
   title: ['text', 'role'],
 };
 
-export function parseDocument(src: string): Node {
-  const ret: Node = {
+export function parseDocument(src: string): LimpNode {
+  const ret: LimpNode = {
     type: 'root',
     line: 0,
     column: 0,
@@ -53,7 +58,7 @@ export function parseDocument(src: string): Node {
   return ret;
 }
 
-function parse(src: string, parent: Node): number {
+function parse(src: string, parent: LimpNode): number {
   if (parent.type === 'text') {
     throw new Error(
       `SemanticError: text nodes cannot have children at line ${
@@ -69,7 +74,7 @@ function parse(src: string, parent: Node): number {
 
     if (!token) {
       parent.children.push(
-        ...parseInline(
+        ..._internal_parseInline(
           {
             type: 'text',
             pos: index,
@@ -87,7 +92,7 @@ function parse(src: string, parent: Node): number {
     const pre = src.slice(0, token.pos);
 
     parent.children.push(
-      ...parseInline(
+      ..._internal_parseInline(
         {
           type: 'text',
           pos: index,
@@ -264,13 +269,13 @@ export function parseRoleNameArgs(nameArgs: string): {
   };
 }
 
-function parseBlock(src: TokenStart, parent: Node): Node {
+function parseBlock(src: TokenStart, parent: LimpNode): LimpNode {
   const nameline = src.matched.trim().split('\n', 1)[0];
   const nameAt = src.matched.search(
     nameline.replace(/([\[\]()^*+.?\\])/g, '\\$1')
   );
 
-  const self: Node = {
+  const self: LimpNode = {
     type: 'block_role',
     line: src.line!,
     column: src.column!,
@@ -284,8 +289,8 @@ function parseBlock(src: TokenStart, parent: Node): Node {
   return self;
 }
 
-function parseTitle(src: TokenStart, parent: Node): Node {
-  const self: Node = {
+function parseTitle(src: TokenStart, parent: LimpNode): LimpNode {
+  const self: LimpNode = {
     type: 'title',
     line: src.line!,
     column: src.column!,
@@ -296,7 +301,7 @@ function parseTitle(src: TokenStart, parent: Node): Node {
   const content = src.matched.split('\n', 1)[0].trim();
 
   self.children.push(
-    ...parseInline(
+    ..._internal_parseInline(
       {
         type: 'text',
         pos: self.pos,
@@ -312,118 +317,141 @@ function parseTitle(src: TokenStart, parent: Node): Node {
   return self;
 }
 
-function parseInline(src: TokenStart, parent: Node): Node[] {
+export function parseInline(src: string): LimpNode {
+  const self: LimpNode = {
+    type: 'root',
+    line: 0,
+    column: 0,
+    pos: 0,
+    children: [],
+  };
+
+  const nodes = _internal_parseInline(
+    {
+      type: 'text',
+      pos: 0,
+      span: src.length,
+      matched: src,
+      line: 0,
+      column: 0,
+    },
+    self
+  );
+
+  self.children.push(...nodes);
+
+  return self;
+}
+
+function _internal_parseInline(src: TokenStart, parent: LimpNode): LimpNode[] {
   if (!src.matched.trim()) {
     return [];
   }
 
-  let matched = src.matched;
-  let index = 0;
-  let line = src.line!;
-  let column = 0;
-  const ret: Node[] = [];
+  return src.matched
+    .split('\n\n')
+    .flatMap((src) => parseInlineFragments(src.split(/(?<!\\)(:|;)/), parent));
+}
 
-  while (matched) {
-    const nextBlock = matched.search('\n\n');
+function parseInlineFragments(
+  fragments: string[],
+  parent: LimpNode
+): LimpNode[] {
+  const ret: LimpNode[] = [];
+  const frags = [...fragments];
 
-    if (nextBlock !== -1) {
-      const text = matched.slice(0, nextBlock);
-      line += text.split('\n').length - 1;
-
-      ret.push(
-        ...parseInline(
-          {
-            type: 'text',
-            matched: text,
-            pos: parent.pos + src.pos + index,
-            span: text.length,
-            line,
-            column,
-          },
-          parent
-        )
-      );
-
-      matched = matched.slice(nextBlock + 2);
-      index += nextBlock + 2;
-      column = 0;
+  while (frags.length > 0) {
+    const node = consumeFragment(frags, parent);
+    if (node === null) {
       continue;
     }
+    ret.push(node);
+  }
 
-    const start = matched.search(/(?<!\\):/);
+  return ret;
+}
 
-    ret.push({
-      type: 'text',
-      line,
-      column,
-      pos: parent.pos + src.pos + index,
-      self: start === -1 ? matched : matched.slice(0, start),
-      children: [],
-    });
+function consumeFragment(frags: string[], parent: LimpNode): LimpNode | null {
+  let frag = frags.shift();
 
-    if (start === -1) {
-      break;
-    }
-    index += start;
+  if (!frag) {
+    return null;
+  }
 
-    matched = matched.slice(start + 1);
+  if (frag !== ':') {
+    return createTextFragment(frag, parent);
+  }
 
-    const bodyStart = matched.search(/(?<!\\):/) + 1;
+  const nameArgs = frags.shift();
 
-    if (bodyStart === 0) {
-      const {
-        line: line_,
-        column: column_,
-        pos,
-        self,
-      } = ret.pop()! as Extract<Node, { type: 'text' }>;
+  if (!nameArgs || (frag = frags.shift()) !== ':') {
+    return createTextFragment(`:${nameArgs || ''}${frag || ''}`, parent);
+  }
 
-      ret.push({
-        type: 'text',
-        line: line_,
-        column: column_,
-        pos,
-        self: `${self}:${matched}`,
-        children: [],
-      });
-      break;
+  let inNameArgs = false;
+  let nested = 0;
+  let body: string[] = [];
+
+  for (;;) {
+    frag = frags.shift();
+
+    // end of stream encountered before the end of inline role
+    if (typeof frag === 'undefined') {
+      // restore modifications of the fragments
+      frags.unshift(...body);
+      return createTextFragment(`:${nameArgs}:`, parent);
     }
 
-    const nameArgs = matched.slice(0, bodyStart - 1);
+    if (frag === ':') {
+      if (inNameArgs) {
+        inNameArgs = false;
+        nested++;
+      } else {
+        inNameArgs = true;
+      }
+    } else if (frag === ';' && !inNameArgs) {
+      nested--;
+    }
+    body.push(frag);
 
-    matched = matched.slice(bodyStart);
-    const bodyEnd = matched.search(/(?<!\\):/);
-    const body = matched.slice(0, bodyEnd === -1 ? undefined : bodyEnd);
-
-    const self: Node = {
-      type: 'role',
-      children: [],
-      column,
-      line,
-      pos: parent.pos + src.pos + index,
-      ...parseRoleNameArgs(nameArgs),
-    };
-
-    self.children.push(
-      ...parseInline(
-        {
-          type: 'text',
-          matched: body,
-          pos: parent.pos + src.pos + index + nameArgs.length + 1,
-          span: body.length,
-          column,
-          line,
-        },
-        self
-      )
-    );
-
-    ret.push(self);
-
-    if (bodyEnd === -1) {
+    if (nested === -1) {
+      body.pop();
       break;
     }
   }
 
-  return ret;
+  let self: LimpNode = {
+    type: 'role',
+    line: parent.line,
+    column: parent.column,
+    pos: parent.pos,
+    children: [],
+    ...parseRoleNameArgs(nameArgs),
+  };
+
+  if (self.unparsed) {
+    let text = createTextFragment(body.join(''), self);
+    if (text !== null) {
+      self.children.push(text);
+    }
+  } else {
+    self.children.push(...parseInlineFragments(body, self));
+  }
+
+  return self;
+}
+
+function createTextFragment(text: string, parent: LimpNode): LimpNode | null {
+  if (!text) {
+    return null;
+  }
+
+  return {
+    type: 'text',
+    line: parent.line,
+    column: parent.column,
+    pos: parent.pos,
+    children: [],
+    self: text,
+  };
 }
