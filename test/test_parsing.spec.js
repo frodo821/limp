@@ -66,4 +66,50 @@ describe('parse inline roles', function () {
       expect(text.children.length).to.equal(2);
     });
   });
+
+  describe('parse titles', function () {
+    it('should be parsed as a header', function () {
+      const text = self.parseDocument(`heading\n=======`);
+
+      expect(text.children.length).to.equal(1);
+      expect(text.children[0].type).to.equal('title');
+      expect(text.children[0].level).to.equal(1);
+      expect(text.children[0].children.length).to.equal(1);
+      expect(text.children[0].children[0].type).to.equal('text');
+      expect(text.children[0].children[0].self).to.equal('heading');
+    });
+
+    it('should be parsed as a 2nd level header', function () {
+      const text = self.parseDocument(`heading\n-------`);
+
+      expect(text.children.length).to.equal(1);
+      expect(text.children[0].type).to.equal('title');
+      expect(text.children[0].level).to.equal(2);
+      expect(text.children[0].children.length).to.equal(1);
+      expect(text.children[0].children[0].type).to.equal('text');
+      expect(text.children[0].children[0].self).to.equal('heading');
+    });
+
+    it('should be parsed as a 3rd level header', function () {
+      const text = self.parseDocument(`heading\n*******`);
+
+      expect(text.children.length).to.equal(1);
+      expect(text.children[0].type).to.equal('title');
+      expect(text.children[0].level).to.equal(3);
+      expect(text.children[0].children.length).to.equal(1);
+      expect(text.children[0].children[0].type).to.equal('text');
+      expect(text.children[0].children[0].self).to.equal('heading');
+    });
+
+    it('should be parsed as a 4th level header', function () {
+      const text = self.parseDocument(`heading\n#######`);
+
+      expect(text.children.length).to.equal(1);
+      expect(text.children[0].type).to.equal('title');
+      expect(text.children[0].level).to.equal(4);
+      expect(text.children[0].children.length).to.equal(1);
+      expect(text.children[0].children[0].type).to.equal('text');
+      expect(text.children[0].children[0].self).to.equal('heading');
+    });
+  });
 });
