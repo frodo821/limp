@@ -19,5 +19,6 @@
     "esbuild": "^0.14.21",
     "mocha": "^9.2.0",
     "typescript": "^4.5.5"
-  }
+  },
+  "bin": "cli.js"
 }
