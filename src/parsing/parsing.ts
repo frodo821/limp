@@ -192,7 +192,7 @@ function findNextToken(src: string): TokenStart | null {
   const matchTitle = src.match(/^ *([-=*#]){4,}\s*$/m);
 
   if (!matchBlock || typeof matchBlock.index !== 'number') {
-    if (matchTitle && typeof matchTitle.index !== 'number') {
+    if (matchTitle && typeof matchTitle.index === 'number') {
       return createTitleToken(src, matchTitle);
     }
 
