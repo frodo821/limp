@@ -286,6 +286,8 @@ function parseBlock(src: TokenStart, parent: LimpNode): LimpNode {
     nameline.replace(/([\[\]()^*+.?\\])/g, '\\$1')
   );
 
+  const block = dedent(src.matched.slice(nameAt + nameline.length + 2));
+
   const self: LimpNode = {
     type: 'block_role',
     line: src.line!,
@@ -295,7 +297,15 @@ function parseBlock(src: TokenStart, parent: LimpNode): LimpNode {
     ...parseRoleNameArgs(nameline.slice(2, nameline.length - 1)),
   };
 
-  parse(dedent(src.matched.slice(nameAt + nameline.length + 2)), self);
+  if (self.unparsed) {
+    const frag = createTextFragment(block, self);
+
+    if (frag) {
+      self.children.push(frag);
+    }
+  } else {
+    parse(block, self);
+  }
 
   return self;
 }
