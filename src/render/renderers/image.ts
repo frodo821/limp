@@ -8,7 +8,9 @@ class ImageRoleRenderer implements Renderer {
     const alt = node.args[1] || node.args['alt'];
     const title = node.args[2] || node.args['title'];
 
-    return `<img src="${href}" alt="${alt}" title="${title}" />`;
+    return `<img src="${href}"${alt ? ` alt="${alt}"` : ''}${
+      title ? ` title="${title}"` : ''
+    } />`;
   }
 }
 
