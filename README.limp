@@ -12,8 +12,8 @@ Table of Contents
     :ref(#intro)::underlined:Introduction;;
 
 
-:id(intro):Introduction;
-------------------------
+:label(intro):Introduction;
+---------------------------
 
 ::*code~
 
