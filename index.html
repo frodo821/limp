@@ -58,10 +58,28 @@ Those are compiled to:<code class="limp-block"><pre>&lt;h1&gt;Heading 1&lt;/h1&g
 </pre></code>
 <code class="limp-inline">h5</code> and <code class="limp-inline">h6</code> are not supported.
 But you can add your own custom headings by adding custom roles and renderers.<h3><span id="roles">Inline Roles</span></h3>
-<b>Inline role</b> is a way to mark text with a role.
+<b>Inline role</b> is a way to mark a text with a role.
 A text segment like <code class="limp-inline">:bold:this is bold text;</code> is a very example of inline role.
 Renderers handle inline roles and block roles, and each of the different roles has a very different display.Note you can make custom renderers and use them in your project to process your document.<h3><span id="block-roles">Block Roles</span></h3>
-<b>Block role</b> is another way to mark a chunk of text with a role.
-</div>
+<b>Block role</b> is another way to mark a text with a role.
+In contrast to inline roles, block roles mark up a chunk of texts.<br>For example:<code class="limp-block"><pre>::*code~
+
+  This is a example of code block.
+
+::list~
+
+  ::item~
+
+    This is a example of list item.
+
+  ::item~
+
+    This is another example of list item.
+</pre></code>
+Blocks are indicated by an indentation consisting of some spaces (code point <code class="limp-inline">0x20</code>). Note tab characters are not counted and ignored when the limp parser measures the indentation level of a line.
+When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.<br>The above example are shown like this:<code class="limp-block"><pre>This is a example of code block.
+</pre></code><ol><li>This is a example of list item.
+</li><li>This is another example of list item.
+</li></ol></div>
   </body>
 </html>
