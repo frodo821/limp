@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run build-internal -- --platform=node && mocha",
     "build": "npm run build-internal -- --platform=browser",
-    "build-internal": "esbuild --outfile=dist/main.js --bundle --minify src/index.ts"
+    "build-internal": "tsc --noEmit && esbuild --outfile=dist/main.js --bundle --minify src/index.ts",
+    "build-docs": "npm run build-internal -- --platform=node && node ./tools/build-documents.js"
   },
   "keywords": [
     "documentation",
