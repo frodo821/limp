@@ -2,7 +2,7 @@ import { Renderer } from '..';
 import { LimpNodeOf } from '../../parsing/parsing';
 import renderer from '../renderer';
 
-class IDRoleRenderer implements Renderer {
+class LabelRoleRenderer implements Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string {
     const id = node.args[0] || node.args['id'];
 
@@ -17,6 +17,9 @@ class IDRoleRenderer implements Renderer {
   }
 }
 
-renderer.registerRenderer('id', new IDRoleRenderer());
+const instance = new LabelRoleRenderer();
+
+renderer.registerRenderer('id', instance);
+renderer.registerRenderer('label', instance);
 
 export default {};
