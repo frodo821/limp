@@ -25,6 +25,8 @@ class TextDecorationsRenderer implements Renderer {
         return `<b>${node.children
           .map((it) => renderer.render(it))
           .join('')}</b>`;
+      case 'br':
+        return `<br>`;
       default:
         throw new Error(`cannnot handle the node with role '${node.name}'`);
     }
@@ -37,6 +39,7 @@ renderer.registerRenderer('bold', instance);
 renderer.registerRenderer('underlined', instance);
 renderer.registerRenderer('italic', instance);
 renderer.registerRenderer('strike', instance);
+renderer.registerRenderer('br', instance);
 renderer.registerRenderer('b', instance);
 renderer.registerRenderer('u', instance);
 renderer.registerRenderer('i', instance);
