@@ -1,0 +1,29 @@
+name: Documentation Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup Node.js environment
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 16.13.2
+          cache: npm
+      - name: build project
+        run: |
+          npm install
+          npm run build-docs
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/docs
