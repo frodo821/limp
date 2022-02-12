@@ -213,7 +213,9 @@ export function parseRoleNameArgs(nameArgs: string): {
   args: { [key: string]: string };
   unparsed: boolean;
 } {
-  const [name, ...rawArgs] = nameArgs.split(/\s*(\(|\))\s*/);
+  const [name, ...rawArgs] = nameArgs
+    .replace(/\\(:|;)/g, '$1')
+    .split(/\s*(\(|\))\s*/);
   const unparsed = name.startsWith('*');
 
   if (rawArgs.length === 0) {
@@ -462,6 +464,6 @@ function createTextFragment(text: string, parent: LimpNode): LimpNode | null {
     column: parent.column,
     pos: parent.pos,
     children: [],
-    self: text,
+    self: text.replace(/\\(:|;)/g, '$1'),
   };
 }
