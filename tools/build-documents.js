@@ -42,6 +42,42 @@ function getAllFilesToCompile(basepath) {
 }
 
 /**
+ * @param {string} basepath 
+ * @param {string} outpath 
+ * @param {string} dirpath 
+ * @returns 
+ */
+function copyAssetFiles(basepath, outpath, dirpath) {
+  const dir = fs.opendirSync(dirpath);
+
+  /** @type {fs.Dirent}
+   */
+  let item;
+
+  while ((item = dir.readSync()) !== null) {
+    const fullpath = path.join(dirpath, item.name);
+
+    if (item.isDirectory()) {
+      copyAssetFiles(basepath, outpath, fullpath);
+    }
+
+    if (item.isFile()) {
+      const copyTo = path.resolve(outpath, path.relative(basepath, fullpath));
+
+      /**
+       * @type {string}
+       */
+      let dirname;
+      if (!fs.existsSync(dirname = path.dirname(copyTo))) {
+        fs.mkdirSync(dirname, { recursive: true });
+      }
+
+      fs.copyFileSync(fullpath, copyTo);
+    }
+  }
+}
+
+/**
  * @param {string} file 
  * @param {string} docs 
  * @param {string} output 
@@ -79,6 +115,11 @@ function main() {
       )
     );
   }
+
+  copyAssetFiles(
+    path.join(docsDir, 'assets'),
+    path.join(outputDir, 'assets'),
+    path.join(docsDir, 'assets'));
 }
 
 main();
