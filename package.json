@@ -4,8 +4,9 @@
   "description": "lightweight extensible document markup language",
   "main": "dist/main.js",
   "scripts": {
-    "test": "npm run build -- --platform=node --format=cjs && mocha",
-    "build": "esbuild --outfile=dist/main.js --bundle --minify src/index.ts"
+    "test": "npm run build-internal -- --platform=node && mocha",
+    "build": "npm run build-internal -- --platform=browser",
+    "build-internal": "esbuild --outfile=dist/main.js --bundle --minify src/index.ts"
   },
   "keywords": [
     "documentation",
