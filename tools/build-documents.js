@@ -115,6 +115,7 @@ function main() {
       renderTemplate(template,
         {
           'filename': out.match(/<h\d>(.*)<\/h\d>/i)?.[0]?.replace(/<.*?>/g, '') ?? '',
+          'filepath': path.relative(docsDir, outPath),
           'content': out,
         }
       )
