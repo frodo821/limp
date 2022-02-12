@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <title>Limp: the lightweight and extensible document markup language</title>
+  </head>
+  <body>
+    <div class="limp-root"><h1>Limp: the lightweight and extensible document markup language</h1>
+<a href="https://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml" target="_self" class="limp-inline"><img src="https://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml/badge.svg" alt="Run Automated Tests" /></a>
+<br>Limp is a lightweight markup language for creating documents.<h2>Table of Contents</h2><ol><li><a href="#intro" target="_self" class="limp-inline"><u>Introduction</u></a></li></ol><h2><span id="intro">Introduction</span></h2>
+Limp has only 3 basic rules to markup a document:<ol><li><a href="#heading" target="_self" class="limp-inline">Heading</a>
+</li><li><a href="#roles" target="_self" class="limp-inline">Inline Roles</a>
+</li><li><a href="#block-roles" target="_self" class="limp-inline">Block Roles</a>
+</li></ol>
+Roles are the essential part of limp: they mark a text how it means in the document.
+For instance, the <code class="limp-inline">ref</code> role indicates the text is a (hyper-)reference,
+and the <code class="limp-inline">label</code> role denotes the text is a significant point in the document and may be referred to.<h3><span id="heading">Heading</span></h3>
+Limp has four levels of headings:<code class="limp-block"><pre>Heading 1
+=========
+
+Heading 2
+---------
+
+Heading 3
+*********
+
+Heading 4
+#########
+</pre></code>
+Those are compiled to:<code class="limp-block"><pre>&lt;h1&gt;Heading 1&lt;/h1&gt;
+
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+
+&lt;h3&gt;Heading 3&lt;/h3&gt;
+
+&lt;h4&gt;Heading 4&lt;/h4&gt;
+</pre></code>
+<code class="limp-inline">h5</code> and <code class="limp-inline">h6</code> are not supported.
+But you can add your own custom headings by adding custom roles and renderers.<h3><span id="roles">Inline Roles</span></h3>
+<b>Inline role</b> is a way to mark text with a role.
+A text segment like <code class="limp-inline">:bold:this is bold text;</code> is a very example of inline role.
+Renderers handle inline roles and block roles, and each of the different roles has a very different display.Note you can make custom renderers and use them in your project to process your document.<h3><span id="block-roles">Block Roles</span></h3>
+<b>Block role</b> is another way to mark a chunk of text with a role.
+</div>
+  </body>
+</html>
