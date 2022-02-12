@@ -1,6 +1,9 @@
 Limp\: the lightweight and extensible document markup language
 ==============================================================
 
+:ref(https\://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml)::image(https\://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml/badge.svg, alt=Run Automated Tests):;;
+:br:;
+
 Limp is a lightweight markup language for creating documents.
 
 Table of Contents
