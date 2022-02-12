@@ -18,11 +18,11 @@ function escape(str: string): string {
 class CodeRoleRenderer implements Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string {
     if (node.type === 'role') {
-      return `<code>${escape(
+      return `<code class="limp-inline">${escape(
         node.children.map((it) => renderer.render(it)).join('')
       )}</code>`;
     }
-    return `<code><pre>${escape(
+    return `<code class="limp-block"><pre>${escape(
       node.children.map((it) => renderer.render(it)).join('')
     )}</pre></code>`;
   }

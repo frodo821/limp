@@ -8,11 +8,11 @@ class AnchorRoleRenderer implements Renderer {
     const target = node.args[1] || node.args['target'] || '_self';
 
     if (node.type === 'role') {
-      return `<a href="${href}" target="${target}">${node.children
+      return `<a href="${href}" target="${target}" class="limp-inline">${node.children
         .map((it) => renderer.render(it))
         .join('')}</a>`;
     }
-    return `<a href="${href}" target="${target}">${node.children
+    return `<a href="${href}" target="${target}" class="limp-block">${node.children
       .map((it) => renderer.render(it))
       .join('')}</a>`;
   }
