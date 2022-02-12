@@ -45,9 +45,10 @@ function getAllFilesToCompile(basepath) {
  * @param {string} basepath 
  * @param {string} outpath 
  * @param {string} dirpath 
+ * @param {string[]} excludes
  * @returns 
  */
-function copyAssetFiles(basepath, outpath, dirpath) {
+function copyAssetFiles(basepath, outpath, dirpath, excludes) {
   const dir = fs.opendirSync(dirpath);
 
   /** @type {fs.Dirent}
@@ -57,8 +58,12 @@ function copyAssetFiles(basepath, outpath, dirpath) {
   while ((item = dir.readSync()) !== null) {
     const fullpath = path.join(dirpath, item.name);
 
+    if (excludes.some(it => new RegExp(it).test(item.name))) {
+      continue;
+    }
+
     if (item.isDirectory()) {
-      copyAssetFiles(basepath, outpath, fullpath);
+      copyAssetFiles(basepath, outpath, fullpath, excludes);
     }
 
     if (item.isFile()) {
@@ -117,9 +122,10 @@ function main() {
   }
 
   copyAssetFiles(
-    path.join(docsDir, 'assets'),
-    path.join(outputDir, 'assets'),
-    path.join(docsDir, 'assets'));
+    docsDir,
+    outputDir,
+    docsDir,
+    ['template', '.limp$']);
 }
 
 main();
