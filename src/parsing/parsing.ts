@@ -1,6 +1,4 @@
-import { canonicalizeLineBreaks, dedent } from '.';
-import { reverse } from './arrayutils';
-import { splitNextDedent } from './strparsing';
+import { canonicalizeLineBreaks, dedent, splitNextDedent } from './strparsing';
 
 export interface BaseNode<T extends string, K> {
   type: T;
@@ -17,7 +15,7 @@ export type LimpNode =
       args: { [key: string]: string };
       unparsed: boolean;
     })
-  | BaseNode<'title', LimpNode>
+  | (BaseNode<'title', LimpNode> & { level: number })
   | (BaseNode<'block_role', LimpNode> & {
       name: string;
       args: { [key: string]: string };
@@ -27,6 +25,8 @@ export type LimpNode =
 
 type Keys = LimpNode['type'];
 
+export type LimpNodeOf<T extends Keys> = Extract<LimpNode, { type: T }>;
+
 type TokenStart = {
   type: Keys;
   pos: number;
@@ -34,6 +34,7 @@ type TokenStart = {
   column?: number;
   line?: number;
   matched: string;
+  extra?: any;
 };
 
 const Inclusions: { [key in Keys]: Keys[] } = {
@@ -42,6 +43,13 @@ const Inclusions: { [key in Keys]: Keys[] } = {
   block_role: ['text', 'role', 'block_role'],
   role: ['text', 'role'],
   title: ['text', 'role'],
+};
+
+const titleLevels = {
+  '=': 1,
+  '-': 2,
+  '*': 3,
+  '#': 4,
 };
 
 export function parseDocument(src: string): LimpNode {
@@ -161,6 +169,7 @@ function createTitleToken(
     // here +1 is because of the linefeed character
     span: match[0].length + titleLine.length + 1,
     matched: `${titleLine}\n${match[0]}`,
+    extra: match[1],
   };
 }
 
@@ -180,7 +189,7 @@ function createBlockToken(
 
 function findNextToken(src: string): TokenStart | null {
   const matchBlock = src.match(/^ *::.*?~\s*$/m);
-  const matchTitle = src.match(/^ *([-=]){4,}\s*$/m);
+  const matchTitle = src.match(/^ *([-=*#]){4,}\s*$/m);
 
   if (!matchBlock || typeof matchBlock.index !== 'number') {
     if (matchTitle && typeof matchTitle.index !== 'number') {
@@ -296,6 +305,7 @@ function parseTitle(src: TokenStart, parent: LimpNode): LimpNode {
     column: src.column!,
     pos: parent.pos + src.pos,
     children: [],
+    level: (titleLevels as any)[(src.extra as string) || '='],
   };
 
   const content = src.matched.split('\n', 1)[0].trim();
