@@ -2,16 +2,12 @@
   "name": "limp",
   "version": "1.0.0",
   "description": "lightweight extensible document markup language",
-  "main": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js"
-  },
+  "main": "lib/index.js",
   "scripts": {
     "test": "npm run build && mocha",
     "build-browser": "npm run build-internal -- --platform=browser",
     "build-internal": "tsc --noEmit && esbuild --outfile=dist/main.js --bundle --minify src/index.ts",
-    "build": "tsc -d --outDir dist",
+    "build": "tsc -d --outDir lib",
     "build-docs": "npm run build-internal -- --platform=node && node ./tools/build-documents.js"
   },
   "keywords": [
