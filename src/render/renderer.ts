@@ -1,5 +1,4 @@
 import { LimpNode, LimpNodeOf } from '..';
-import { BaseNode } from '../parsing/parsing';
 
 export interface Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string;
