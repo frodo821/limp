@@ -22,6 +22,9 @@
     "mocha": "^9.2.0",
     "typescript": "^4.5.5"
   },
-  "bin": "cli.js",
+  "bin": {
+    "limp": "./cli.js",
+    "limp2markdown": "./scripts/markdown.js"
+  },
   "repository": "https://github.com/frodo821/limp"
 }
