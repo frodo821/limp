@@ -1,18 +1,32 @@
+/**
+ * @typedef {import('../lib/parsing/parsing').LimpNode} LimpNode
+ */
+
 const fs = require('fs');
 const path = require('path');
 const limp = require('..');
 const { 'default': renderer } = require('../lib/render');
 const { version, repository, name: packageName } = require('../package.json');
 
+/**
+ * extracts metadata from the document
+ */
 class ExtraDataRole {
   constructor() {
     this.data = {};
   }
 
+  /**
+   * clears holding data
+   */
   clear() {
     this.data = {};
   }
 
+  /**
+   * clears holding data and returns it
+   * @returns {{[key: string]: any}} held data
+   */
   getDataOnce() {
     const data = { ...this.data };
     this.clear();
@@ -20,6 +34,7 @@ class ExtraDataRole {
   }
 
   /**
+   * render a node with certain role
    * @param {LimpNode} node 
    * @returns {string}
    */
