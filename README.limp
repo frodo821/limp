@@ -2,7 +2,6 @@ Limp\: the lightweight and extensible document markup language
 ==============================================================
 
 :ref(https\://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml)::image(https\://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml/badge.svg, alt=Run Automated Tests):;;
-:br:;
 
 Limp is a lightweight markup language for creating documents.
 
@@ -18,6 +17,143 @@ Table of Contents
 :label(intro):Introduction;
 ---------------------------
 
+Limp has only 3 basic rules to markup a document\:
+
+::list~
+
+  ::item~
+    :ref(#heading):Heading;
+
+  ::item~
+    :ref(#roles):Inline Roles;
+
+  ::item~
+    :ref(#block-roles):Block Roles;
+
+Roles are the essential part of limp\: they mark a text how it means in the document.
+For instance, the :*code:ref; role indicates the text is a (hyper-)reference,
+and the :*code:label; role denotes the text is a significant point in the document and may be referred to.
+
+:label(heading):Heading;
+************************
+
+Limp has four levels of headings\:
+
 ::*code~
 
-  this is code block
+  Heading 1
+  =========
+
+  Heading 2
+  ---------
+
+  Heading 3
+  *********
+
+  Heading 4
+  #########
+
+Those are compiled to\:
+
+::*code~
+
+  <h1>Heading 1</h1>
+
+  <h2>Heading 2</h2>
+
+  <h3>Heading 3</h3>
+
+  <h4>Heading 4</h4>
+
+:*code:h5; and :*code:h6; are not supported.
+But you can add your own custom headings by adding custom roles and renderers.
+
+:label(roles):Inline Roles;
+***************************
+
+:bold:Inline role; is a way to mark a text with a role.
+A text segment like :*code::bold:this is bold text;; is a very example of inline role.
+Renderers handle inline roles and block roles, and each of the different roles has a very different display.
+
+Note you can make custom renderers and use them in your project to process your document.
+
+:label(block-roles):Block Roles;
+********************************
+
+:bold:Block role; is another way to mark a text with a role.
+In contrast to inline roles, block roles mark up a chunk of texts.:br:;
+
+For example\:
+
+::*code~
+
+  ::*code~
+
+    This is a example of code block.
+
+  ::list~
+
+    ::item~
+
+      This is a example of list item.
+
+    ::item~
+
+      This is another example of list item.
+
+Blocks are indicated by an indentation consisting of some spaces (code point :*code:0x20;). Note tab characters are not counted and ignored when the limp parser measures the indentation level of a line.
+When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.:br:;
+
+The above example are shown like this\:
+
+::*code~
+
+  This is a example of code block.
+
+::list~
+
+  ::item~
+
+    This is a example of list item.
+
+  ::item~
+
+    This is another example of list item.
+
+
+:label(default-roles):Default Roles;
+------------------------------------
+
+Limp has a default set of some roles\:
+
+::list~
+  ::item~
+    :ref(#image):Image;
+
+  ::item~
+    :ref(#line-break):Line Break;
+
+  ::item~
+    :ref(#block-code):Block Code;
+
+  ::item~
+    :ref(#block-list):Block List;
+
+  ::item~
+    :ref(#block-table):Block Table;
+
+Here is a complete table of inline roles and their appearance\:
+
+::table~
+  ::th~
+    :td:Role Name; :td:Output; :td:Aliases; :td:Remarks;
+  ::tr~
+    :td::*code:bold;; :td::b:text;; :td::*code:b;; :td:;
+  ::tr~
+    :td::*code:italic;; :td::i:text;; :td::*code:i;; :td:;
+  ::tr~
+    :td::*code:underlined;; :td::u:text;; :td::*code:u;; :td:;
+  ::tr~
+    :td::*code:strike;; :td::s:text;; :td::*code:s;; :td:;
+  ::tr~
+    :td::*code:code;; :td::*code:text;; :td:; :td:code role can also be used as a block role.;
