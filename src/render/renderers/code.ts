@@ -24,7 +24,7 @@ class CodeRoleRenderer implements Renderer {
     }
     return `<pre class="limp-block"><code>${escape(
       node.children.map((it) => renderer.render(it)).join('')
-    )}</code></pre`;
+    )}</code></pre>`;
   }
 }
 
