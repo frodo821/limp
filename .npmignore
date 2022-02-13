@@ -4,3 +4,4 @@ src/
 tools/
 .github/
 tsconfig.json
+README.limp
