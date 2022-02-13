@@ -1,6 +1,55 @@
 const fs = require('fs');
 const path = require('path');
 const limp = require('..');
+const { 'default': renderer } = require('../lib/render');
+
+class ExtraDataRole {
+  constructor() {
+    this.data = {};
+  }
+
+  clear() {
+    this.data = {};
+  }
+
+  getDataOnce() {
+    const data = { ...this.data };
+    this.clear();
+    return data;
+  }
+
+  /**
+   * @param {LimpNode} node 
+   * @returns {string}
+   */
+  render(node) {
+    if (node.type !== 'block_role') {
+      console.warn('data role cannot be applied to a inline text');
+      return '';
+    }
+
+    const first = node.children[0];
+
+    if (!first || first.type !== 'text') {
+      console.warn('expected a json string');
+      return '';
+    }
+
+    try {
+      Object.assign(this.data, JSON.parse(first.self));
+    } catch {
+      console.warn('malformed json string');
+    }
+
+    console.log(this.data);
+
+    return '';
+  }
+}
+
+const collector = new ExtraDataRole();
+
+renderer.registerRenderer('data', collector);
 
 /**
  * render text templates with variables
@@ -10,7 +59,12 @@ const limp = require('..');
  */
 function renderTemplate(template, vars) {
   return template.replace(/(?<!\\)\$[a-z0-9_]+/gi, function (str) {
-    return vars[str.slice(1)] || str;
+    const name = str.slice(1);
+    if (!name in vars) {
+      console.warn(`!!!warning: variable ${name} not found in the current context!!!`);
+      return str;
+    }
+    return vars[name];
   }).replace('\\$', '$');
 }
 
@@ -101,26 +155,35 @@ function main() {
   const docsDir = path.join(baseDir, 'docs');
   const outputDir = path.join(baseDir, 'build', 'docs');
   const files = getAllFilesToCompile(docsDir);
+  const indices = {};
 
   for (let file of files) {
-    const out = limp.compile(fs.readFileSync(file, 'utf8'));
+    const content = limp.compile(fs.readFileSync(file, 'utf8'));
+    const extras = collector.getDataOnce();
     const [outPath, outDir] = getOutputPath(file, docsDir, outputDir);
 
     if (!fs.existsSync(outDir)) {
       fs.mkdirSync(outDir, { recursive: true });
     }
 
+    const filename = content.match(/<h(\d)>(.*)<\/h\1>/i)?.[2]?.replace(/<.*?>/g, '') ?? '';
+    const filepath = path.relative(outputDir, outPath).replace(/\\/g, '/');
+
+    indices[filepath] = { title: filename, extras };
+
     fs.writeFileSync(
       outPath,
       renderTemplate(template,
         {
-          'filename': out.match(/<h\d>(.*)<\/h\d>/i)?.[0]?.replace(/<.*?>/g, '') ?? '',
-          'filepath': path.relative(outputDir, outPath),
-          'content': out,
+          filename,
+          filepath,
+          content,
         }
       )
     );
   }
+
+  fs.writeFileSync(path.join(outputDir, 'indices.json'), JSON.stringify(indices));
 
   copyAssetFiles(
     docsDir,
