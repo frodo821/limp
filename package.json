@@ -26,5 +26,6 @@
     "limp": "./cli.js",
     "limp2markdown": "./scripts/markdown.js"
   },
-  "repository": "https://github.com/frodo821/limp"
+  "repository": "https://github.com/frodo821/limp",
+  "homepage": "https://limp.frodo821.me"
 }
