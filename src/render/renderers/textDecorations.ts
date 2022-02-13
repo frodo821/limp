@@ -28,7 +28,9 @@ class TextDecorationsRenderer implements Renderer {
       case 'br':
         return `<br>`;
       default:
-        throw new Error(`cannnot handle the node with role '${node.name}'`);
+        return `<span class="limp-inline limp-${node.name}">${renderer.render(
+          node
+        )}</span>`;
     }
   }
 }

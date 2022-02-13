@@ -388,7 +388,8 @@ function _internal_parseInline(
           (node) => parseInlineFragments(src.split(/(?<!\\)(:|;)/), node),
           parent
         )
-      );
+      )
+      .filter((it) => it) as LimpNode[];
   }
 
   return src.matched
@@ -485,7 +486,7 @@ function consumeFragment(frags: string[], parent: LimpNode): LimpNode | null {
 }
 
 function createTextFragment(text: string, parent: LimpNode): LimpNode | null {
-  if (!text) {
+  if (!text.trim()) {
     return null;
   }
 
@@ -502,7 +503,7 @@ function createTextFragment(text: string, parent: LimpNode): LimpNode | null {
 function createParagraph(
   nodes: (parent: LimpNode) => LimpNode[],
   parent: LimpNode
-): LimpNode {
+): LimpNode | null {
   const self: LimpNode = {
     type: 'paragraph',
     line: parent.line,
@@ -512,6 +513,10 @@ function createParagraph(
   };
 
   self.children.push(...nodes(self));
+
+  if (self.children.length === 0) {
+    return null;
+  }
 
   return self;
 }
