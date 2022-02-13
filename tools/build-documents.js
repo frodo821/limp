@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const limp = require('..');
 const { 'default': renderer } = require('../lib/render');
-const { version, repository, name: packageName } = require('../package.json');
+const { version, repository, name: packageName, homepage } = require('../package.json');
 
 /**
  * extracts metadata from the document
@@ -200,6 +200,8 @@ function main() {
           content,
           version,
           repository,
+          homepage,
+          docs: homepage,
           package: packageName,
           ...extras,
         }
