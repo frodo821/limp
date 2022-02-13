@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const self = require('../dist/main');
+const self = require('..');
 
 describe('parse documents', function () {
   describe('parse role name and args', function () {

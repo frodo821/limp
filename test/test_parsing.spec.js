@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const self = require('../dist/main');
+const self = require('..');
 
 describe('parse inline roles', function () {
   describe('parse inline role not nested without args in a cluster', function () {

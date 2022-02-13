@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const self = require('../dist/main');
+const self = require('..');
 
 describe('test renderers', function () {
   describe('test text decorations', function () {
