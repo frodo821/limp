@@ -21,6 +21,7 @@ export type LimpNode =
       args: { [key: string]: string };
       unparsed: boolean;
     })
+  | BaseNode<'paragraph', LimpNode>
   | BaseNode<'root', LimpNode>;
 
 type Keys = LimpNode['type'];
@@ -43,6 +44,7 @@ const Inclusions: { [key in Keys]: Keys[] } = {
   block_role: ['text', 'role', 'block_role'],
   role: ['text', 'role'],
   title: ['text', 'role'],
+  paragraph: [],
 };
 
 const titleLevels = {
@@ -75,6 +77,8 @@ function parse(src: string, parent: LimpNode): number {
     );
   }
 
+  const from_root = parent.type === 'root';
+
   let index = 0;
 
   while (src) {
@@ -91,7 +95,8 @@ function parse(src: string, parent: LimpNode): number {
             column: parent.column,
             line: parent.line,
           },
-          parent
+          parent,
+          from_root
         )
       );
       break;
@@ -109,7 +114,8 @@ function parse(src: string, parent: LimpNode): number {
           column: parent.column,
           line: parent.line,
         },
-        parent
+        parent,
+        from_root
       )
     );
 
@@ -365,9 +371,24 @@ export function parseInline(src: string): LimpNode {
   return self;
 }
 
-function _internal_parseInline(src: TokenStart, parent: LimpNode): LimpNode[] {
+function _internal_parseInline(
+  src: TokenStart,
+  parent: LimpNode,
+  from_root?: boolean
+): LimpNode[] {
   if (!src.matched.trim()) {
     return [];
+  }
+
+  if (from_root) {
+    return src.matched
+      .split('\n\n')
+      .map((src) =>
+        createParagraph(
+          (node) => parseInlineFragments(src.split(/(?<!\\)(:|;)/), node),
+          parent
+        )
+      );
   }
 
   return src.matched
@@ -476,4 +497,21 @@ function createTextFragment(text: string, parent: LimpNode): LimpNode | null {
     children: [],
     self: text.replace(/\\(:|;)/g, '$1'),
   };
+}
+
+function createParagraph(
+  nodes: (parent: LimpNode) => LimpNode[],
+  parent: LimpNode
+): LimpNode {
+  const self: LimpNode = {
+    type: 'paragraph',
+    line: parent.line,
+    column: parent.column,
+    pos: parent.pos,
+    children: [],
+  };
+
+  self.children.push(...nodes(self));
+
+  return self;
 }

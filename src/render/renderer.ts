@@ -1,4 +1,5 @@
 import { LimpNode, LimpNodeOf } from '..';
+import { BaseNode } from '../parsing/parsing';
 
 export interface Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string;
@@ -23,9 +24,15 @@ export class LimpRenderer {
         return this.block_role(node);
       case 'root':
         return this.root(node);
+      case 'paragraph':
+        return this.paragraph(node);
       default:
         throw new Error(`Unknown node type: ${(node as unknown as any).type}`);
     }
+  }
+
+  paragraph(node: LimpNodeOf<'paragraph'>): string {
+    return `<p>${node.children.map((it) => this.render(it)).join('')}</p>`;
   }
 
   text(node: LimpNodeOf<'text'>): string {
