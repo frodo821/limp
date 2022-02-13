@@ -1,3 +1,9 @@
+::*comment(noemit)~
+  You can use a data section to store variables to refer to in this document.
+  Those data are also used to index documentation files.
+
+  Note that the data section is not emitted in the output HTML.
+
 ::*data~
 
   {
@@ -108,7 +114,7 @@ For example\:
       This is another example of list item.
 
 Blocks are indicated by an indentation consisting of some spaces (code point :*code:0x20;). Note tab characters are not counted and ignored when the limp parser measures the indentation level of a line.
-When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.:br:;
+When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.
 
 The above example are shown like this\:
 

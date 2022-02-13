@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const limp = require('..');
 const { 'default': renderer } = require('../lib/render');
+const { version, repository, name: packageName } = require('../package.json');
 
 class ExtraDataRole {
   constructor() {
@@ -58,6 +59,10 @@ renderer.registerRenderer('data', collector);
  * @returns {string} interpolated string
  */
 function renderTemplate(template, vars) {
+  if ('content' in vars) {
+    template = template.replace(/\$content/g, vars.content);
+  }
+
   return template.replace(/(?<!\\)\$[a-z0-9_]+/gi, function (str) {
     const name = str.slice(1);
     if (!name in vars) {
@@ -178,6 +183,10 @@ function main() {
           filename,
           filepath,
           content,
+          version,
+          repository,
+          package: packageName,
+          ...extras,
         }
       )
     );
