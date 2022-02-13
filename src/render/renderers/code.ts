@@ -1,19 +1,7 @@
 import { Renderer } from '..';
 import { LimpNodeOf } from '../../parsing/parsing';
+import { escape } from '../html/utils';
 import renderer from '../renderer';
-
-function escape(str: string): string {
-  return str.replace(/[&><"]/g, function (s: string) {
-    return (
-      {
-        '&': '&amp;',
-        '>': '&gt;',
-        '<': '&lt;',
-        '"': '&quot;',
-      }[s] || s
-    );
-  });
-}
 
 class CodeRoleRenderer implements Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string {
