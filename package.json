@@ -1,6 +1,6 @@
 {
   "name": "doc-limp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "lightweight extensible document markup language",
   "main": "lib/index.js",
   "scripts": {
