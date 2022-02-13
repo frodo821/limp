@@ -2,11 +2,16 @@
   "name": "limp",
   "version": "1.0.0",
   "description": "lightweight extensible document markup language",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
+  },
   "scripts": {
-    "test": "npm run build-internal -- --platform=node && mocha",
-    "build": "npm run build-internal -- --platform=browser",
+    "test": "npm run build && mocha",
+    "build-browser": "npm run build-internal -- --platform=browser",
     "build-internal": "tsc --noEmit && esbuild --outfile=dist/main.js --bundle --minify src/index.ts",
+    "build": "tsc -d --outDir dist",
     "build-docs": "npm run build-internal -- --platform=node && node ./tools/build-documents.js"
   },
   "keywords": [
@@ -21,5 +26,11 @@
     "mocha": "^9.2.0",
     "typescript": "^4.5.5"
   },
-  "bin": "cli.js"
+  "bin": "cli.js",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/frodo821/limp/blob/master/LICENSE"
+    }
+  ]
 }
