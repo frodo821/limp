@@ -26,17 +26,17 @@
     <title>Limp: the lightweight and extensible document markup language - Limp documentation</title>
   </head>
   <body>
-    <div class="limp-root"><h1>Limp: the lightweight and extensible document markup language</h1>
+    <div class="limp-root"><h1>Limp: the lightweight and extensible document markup language</h1><p>
 <a href="https://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml" target="_self" class="limp-inline"><img src="https://github.com/frodo821/limp/actions/workflows/run_automated_tests.yml/badge.svg" alt="Run Automated Tests" /></a>
-<br>Limp is a lightweight markup language for creating documents.<h2>Table of Contents</h2><ol><li><a href="#intro" target="_self" class="limp-inline"><u>Introduction</u></a></li></ol><h2><span id="intro">Introduction</span></h2>
-Limp has only 3 basic rules to markup a document:<ol><li><a href="#heading" target="_self" class="limp-inline">Heading</a>
+<br></p><p>Limp is a lightweight markup language for creating documents.</p><p></p><h2>Table of Contents</h2><ol><li><a href="#intro" target="_self" class="limp-inline"><u>Introduction</u></a></li></ol><h2><span id="intro">Introduction</span></h2><p>
+Limp has only 3 basic rules to markup a document:</p><p></p><ol><li><a href="#heading" target="_self" class="limp-inline">Heading</a>
 </li><li><a href="#roles" target="_self" class="limp-inline">Inline Roles</a>
 </li><li><a href="#block-roles" target="_self" class="limp-inline">Block Roles</a>
-</li></ol>
+</li></ol><p>
 Roles are the essential part of limp: they mark a text how it means in the document.
 For instance, the <code class="limp-inline">ref</code> role indicates the text is a (hyper-)reference,
-and the <code class="limp-inline">label</code> role denotes the text is a significant point in the document and may be referred to.<h3><span id="heading">Heading</span></h3>
-Limp has four levels of headings:<code class="limp-block"><pre>Heading 1
+and the <code class="limp-inline">label</code> role denotes the text is a significant point in the document and may be referred to.</p><p></p><h3><span id="heading">Heading</span></h3><p>
+Limp has four levels of headings:</p><p></p><code class="limp-block"><pre>Heading 1
 =========
 
 Heading 2
@@ -47,22 +47,22 @@ Heading 3
 
 Heading 4
 #########
-</pre></code>
-Those are compiled to:<code class="limp-block"><pre>&lt;h1&gt;Heading 1&lt;/h1&gt;
+</pre></code><p>
+Those are compiled to:</p><p></p><code class="limp-block"><pre>&lt;h1&gt;Heading 1&lt;/h1&gt;
 
 &lt;h2&gt;Heading 2&lt;/h2&gt;
 
 &lt;h3&gt;Heading 3&lt;/h3&gt;
 
 &lt;h4&gt;Heading 4&lt;/h4&gt;
-</pre></code>
+</pre></code><p>
 <code class="limp-inline">h5</code> and <code class="limp-inline">h6</code> are not supported.
-But you can add your own custom headings by adding custom roles and renderers.<h3><span id="roles">Inline Roles</span></h3>
+But you can add your own custom headings by adding custom roles and renderers.</p><p></p><h3><span id="roles">Inline Roles</span></h3><p>
 <b>Inline role</b> is a way to mark a text with a role.
 A text segment like <code class="limp-inline">:bold:this is bold text;</code> is a very example of inline role.
-Renderers handle inline roles and block roles, and each of the different roles has a very different display.Note you can make custom renderers and use them in your project to process your document.<h3><span id="block-roles">Block Roles</span></h3>
+Renderers handle inline roles and block roles, and each of the different roles has a very different display.</p><p>Note you can make custom renderers and use them in your project to process your document.</p><p></p><h3><span id="block-roles">Block Roles</span></h3><p>
 <b>Block role</b> is another way to mark a text with a role.
-In contrast to inline roles, block roles mark up a chunk of texts.<br>For example:<code class="limp-block"><pre>::*code~
+In contrast to inline roles, block roles mark up a chunk of texts.<br></p><p>For example:</p><p></p><code class="limp-block"><pre>::*code~
 
   This is a example of code block.
 
@@ -75,9 +75,9 @@ In contrast to inline roles, block roles mark up a chunk of texts.<br>For exampl
   ::item~
 
     This is another example of list item.
-</pre></code>
+</pre></code><p>
 Blocks are indicated by an indentation consisting of some spaces (code point <code class="limp-inline">0x20</code>). Note tab characters are not counted and ignored when the limp parser measures the indentation level of a line.
-When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.<br>The above example are shown like this:<code class="limp-block"><pre>This is a example of code block.
+When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.<br></p><p>The above example are shown like this:</p><p></p><code class="limp-block"><pre>This is a example of code block.
 </pre></code><ol><li>This is a example of list item.
 </li><li>This is another example of list item.
 </li></ol></div>
