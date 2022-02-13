@@ -2,3 +2,4 @@ dist/
 node_modules/
 build/
 lib/
+README.md
