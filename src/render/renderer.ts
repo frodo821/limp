@@ -6,7 +6,16 @@ export interface Renderer {
 }
 
 export class LimpRenderer {
+  private static instance: LimpRenderer;
   private renderers: { [key: string]: Renderer } = {};
+
+  constructor() {
+    LimpRenderer.instance = this;
+  }
+
+  static get current(): LimpRenderer {
+    return this.instance;
+  }
 
   registerRenderer(name: string, renderer: Renderer) {
     this.renderers[name] = renderer;
