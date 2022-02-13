@@ -120,3 +120,41 @@ The above example are shown like this\:
   ::item~
 
     This is another example of list item.
+
+
+:label(default-roles):Default Roles;
+------------------------------------
+
+Limp has a default set of some roles\:
+
+::list~
+  ::item~
+    :ref(#image):Image;
+
+  ::item~
+    :ref(#line-break):Line Break;
+
+  ::item~
+    :ref(#block-code):Block Code;
+
+  ::item~
+    :ref(#block-list):Block List;
+
+  ::item~
+    :ref(#block-table):Block Table;
+
+Here is a complete table of inline roles and their appearance\:
+
+::table~
+  ::th~
+    :td:Role Name; :td:Output; :td:Aliases; :td:Remarks;
+  ::tr~
+    :td::*code:bold;; :td::b:text;; :td::*code:b;; :td:;
+  ::tr~
+    :td::*code:italic;; :td::i:text;; :td::*code:i;; :td:;
+  ::tr~
+    :td::*code:underlined;; :td::u:text;; :td::*code:u;; :td:;
+  ::tr~
+    :td::*code:strike;; :td::s:text;; :td::*code:s;; :td:;
+  ::tr~
+    :td::*code:code;; :td::*code:text;; :td:; :td:code role can also be used as a block role.;
