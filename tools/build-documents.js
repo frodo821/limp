@@ -78,8 +78,8 @@ function renderTemplate(template, vars) {
     template = template.replace(/\$content/g, vars.content);
   }
 
-  return template.replace(/(?<!\\)\$[a-z0-9_]+/gi, function (str) {
-    const name = str.slice(1);
+  return template.replace(/(?<!\\)\$(?:(?:([a-z0-9_]+))|(?:{([a-z0-9_]+)}))/gi, function (_, n1, n2) {
+    const name = n1 || n2;
     if (!name in vars) {
       console.warn(`!!!warning: variable ${name} not found in the current context!!!`);
       return str;
@@ -186,16 +186,14 @@ function main() {
       fs.mkdirSync(outDir, { recursive: true });
     }
 
-    const filename = content.match(/<h(\d)>(.*)<\/h\1>/i)?.[2]?.replace(/<.*?>/g, '') ?? '';
     const filepath = path.relative(outputDir, outPath).replace(/\\/g, '/');
 
-    indices[filepath] = { title: filename, extras };
+    indices[filepath] = { ...extras };
 
     fs.writeFileSync(
       outPath,
       renderTemplate(template,
         {
-          filename,
           filepath,
           content,
           version,

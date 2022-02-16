@@ -7,7 +7,9 @@
 ::*data~
 
   {
-    "date": "2022-02-13T15:26:17.901Z"
+    "date": "2022-02-13T15:26:17.901Z",
+    "description": "Limp is the lightweight and extensible markup language for docs",
+    "title": "Limp: the lightweight and extensible document markup language"
   }
 
 Limp\: the lightweight and extensible document markup language
