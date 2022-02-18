@@ -29,7 +29,7 @@ export class MarkdownRenderer extends LimpRenderer {
     const renderer = this.renderers[node.name];
     if (renderer) {
       const result = renderer.render(node);
-      return result ? `\n${result}\n` : '';
+      return result ? `${result}\n` : '';
     } else {
       return `<div class="limp-unknown limp-${node.name}">${node.children
         .map((it) => this.render(it))
