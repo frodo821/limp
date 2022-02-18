@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const limp = require('..');
-const { 'default': renderer } = require('../lib/render');
+const { 'default': renderer } = require('../lib/render/html');
 const { version, repository, name: packageName, homepage } = require('../package.json');
 
 /**
