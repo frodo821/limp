@@ -95,7 +95,7 @@ Note you can make custom renderers and use them in your project to process your 
 ********************************
 
 :bold:Block role; is another way to mark a text with a role.
-In contrast to inline roles, block roles mark up a chunk of texts.:br:;
+In contrast to inline roles, block roles mark up a chunk of texts.
 
 For example\:
 
@@ -134,6 +134,36 @@ The above example are shown like this\:
 
     This is another example of list item.
 
+:label(unparsed-marker):Unparsed Marker;
+****************************************
+
+A role or role block can have an :b:unparsed marker;.
+You can use this marker to mark a text segment, force the parser not to parse and treat the containing text as plain text.
+This functionality shall be helpful with code roles or implementing custom embedded metadata roles.
+
+Example\:
+
+::*code~
+
+  ::*comment~
+    code role with unparsed marker:
+
+  ::*code~
+    :u:This is a :i:example; of :b:code; block.;
+
+  ::*comment~
+    code role without unparsed marker:
+
+  ::code~
+    :u:This is a :i:example; of :b:code; block.;
+
+Output\:
+
+::*code~
+  :u:This is a :i:example; of :b:code; block.;
+
+::code~
+  :u:This is a :i:example; of :b:code; block.;
 
 :label(default-roles):Default Roles;
 ------------------------------------
@@ -145,16 +175,22 @@ Limp has a default set of some roles\:
     :ref(#image):Image;
 
   ::item~
-    :ref(#line-break):Line Break;
-
-  ::item~
     :ref(#block-code):Block Code;
 
   ::item~
-    :ref(#block-list):Block List;
+    :ref(#list):List;
 
   ::item~
-    :ref(#block-table):Block Table;
+    :ref(#table):Table;
+
+  ::item~
+    :ref(#comments):Comments;
+
+  ::item~
+    :ref(#block-quote):Block Quote;
+
+  ::item~
+    :ref(#details-spoiler):Details/Spoiler;
 
 Here is a complete table of inline roles and their appearance\:
 
@@ -171,3 +207,60 @@ Here is a complete table of inline roles and their appearance\:
     :td::*code:strike;; :td::s:text;; :td::*code:s;; :td:;
   ::tr~
     :td::*code:code;; :td::*code:text;; :td:; :td:code role can also be used as a block role.;
+  ::tr~
+    :td::*code:label;; :td::label(#test-label)::text;; :td:;
+    :td:label role can also be used as a block role. It is used to mark a significant point in the document to refer from somewhere.;
+  ::tr~
+    :td::*code:ref;; :td::ref(#test-label)::text;; :td:; :td:code role can also be used as a block role.;
+  ::tr~
+    :td::*code:br;; :td:; :td:; :td:this role inserts a line break;
+
+:label(image):Image;
+********************
+
+:*code:img; role is a way to embed an image in the document. This role has 3 attributes\:
+
+::table~
+  ::th~
+    :td:Attribute Name; :td:Description; :td:Required?;
+  ::tr~
+    :td::*code:src;; :td:The URL of the image.; :td:Yes;
+  ::tr~
+    :td::*code:alt;; :td:The alternative text of the image.; :td:No;
+  ::tr~
+    :td::*code:title;; :td:The title of the image.; :td:No;
+
+Example\:
+
+::*code~
+  :img(image_url)::;
+
+  :img(image_url, "alternative text")::;
+
+  :img(image_url, "alternative text")::;
+
+  :img(image_url, alt="alternative text", title="tooltip text")::;
+
+:label(block-code):Block Code;
+******************************
+:*code:code; role is a way to embed a code block in the document.
+You should use this role with :*code:*; unparsed marker.
+
+Example\:
+
+::*code~
+  ::*code~
+    # This is a Python code
+
+    import sys
+
+    print([line.split(','): for line in sys.stdin])
+
+Output\:
+
+::*code~
+  # This is a Python code
+
+  import sys
+
+  print([line.split(','): for line in sys.stdin])
