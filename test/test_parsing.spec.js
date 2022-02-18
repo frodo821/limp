@@ -1,10 +1,10 @@
 const { expect } = require('chai');
-const self = require('..');
+const { parseInline, parseDocument } = require('..');
 
 describe('parse inline roles', function () {
   describe('parse inline role not nested without args in a cluster', function () {
     it('should be parsed with a inline role', function () {
-      const text = self.parseInline(":bold:this is bold text;");
+      const text = parseInline(":bold:this is bold text;");
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('role');
@@ -19,7 +19,7 @@ describe('parse inline roles', function () {
 
   describe('parse inline role nested without args in a cluster', function () {
     it('should be parsed with a nested inline role', function () {
-      const text = self.parseInline(":underlined::bold:this is bold, underlined text;;");
+      const text = parseInline(":underlined::bold:this is bold, underlined text;;");
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('role');
@@ -39,7 +39,7 @@ describe('parse inline roles', function () {
 
   describe('parse inline role nested with args in a cluster', function () {
     it('should be parsed with a nested inline role with args', function () {
-      const text = self.parseInline(":underlined::ref(#target):this is underlined anchor;;");
+      const text = parseInline(":underlined::ref(#target):this is underlined anchor;;");
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('role');
@@ -59,7 +59,7 @@ describe('parse inline roles', function () {
 
   describe('parse inline role in two clusters', function () {
     it('should be parsed with a nested inline role in two clusters', function () {
-      const text = self.parseInline(`:underlined::ref(#target):this is underlined anchor;;
+      const text = parseInline(`:underlined::ref(#target):this is underlined anchor;;
 
 :underlined::bold:this is bold, underlined text;;`);
 
@@ -69,7 +69,7 @@ describe('parse inline roles', function () {
 
   describe('parse titles', function () {
     it('should be parsed as a header', function () {
-      const text = self.parseDocument(`heading\n=======`);
+      const text = parseDocument(`heading\n=======`);
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('title');
@@ -80,7 +80,7 @@ describe('parse inline roles', function () {
     });
 
     it('should be parsed as a 2nd level header', function () {
-      const text = self.parseDocument(`heading\n-------`);
+      const text = parseDocument(`heading\n-------`);
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('title');
@@ -91,7 +91,7 @@ describe('parse inline roles', function () {
     });
 
     it('should be parsed as a 3rd level header', function () {
-      const text = self.parseDocument(`heading\n*******`);
+      const text = parseDocument(`heading\n*******`);
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('title');
@@ -102,7 +102,7 @@ describe('parse inline roles', function () {
     });
 
     it('should be parsed as a 4th level header', function () {
-      const text = self.parseDocument(`heading\n#######`);
+      const text = parseDocument(`heading\n#######`);
 
       expect(text.children.length).to.equal(1);
       expect(text.children[0].type).to.equal('title');
