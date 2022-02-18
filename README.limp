@@ -194,10 +194,10 @@ Here is a complete table of inline roles and their appearance\:
   ::tr~
     :td::*code:code;; :td::*code:text;; :td:; :td:code role can also be used as a block role.;
   ::tr~
-    :td::*code:label;; :td::label(#test-label)::text;; :td:;
+    :td::*code:label;; :td::label(#test-label):text;; :td:;
     :td:label role can also be used as a block role. It is used to mark a significant point in the document to refer from somewhere.;
   ::tr~
-    :td::*code:ref;; :td::ref(#test-label)::text;; :td:; :td:code role can also be used as a block role.;
+    :td::*code:ref;; :td::ref(#test-label):text;; :td:; :td:code role can also be used as a block role.;
   ::tr~
     :td::*code:br;; :td:; :td:; :td:this role inserts a line break;
 
