@@ -4,9 +4,9 @@ export interface Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string;
 }
 
-export default class LimpRenderer {
+export default abstract class LimpRenderer {
   private static instance: LimpRenderer;
-  private renderers: { [key: string]: Renderer } = {};
+  protected renderers: { [key: string]: Renderer } = {};
 
   constructor() {
     LimpRenderer.instance = this;
@@ -39,45 +39,15 @@ export default class LimpRenderer {
     }
   }
 
-  paragraph(node: LimpNodeOf<'paragraph'>): string {
-    return `<p>${node.children.map((it) => this.render(it)).join('')}</p>`;
-  }
+  abstract paragraph(node: LimpNodeOf<'paragraph'>): string;
 
-  text(node: LimpNodeOf<'text'>): string {
-    return node.self;
-  }
+  abstract text(node: LimpNodeOf<'text'>): string;
 
-  role(node: LimpNodeOf<'role'>): string {
-    const renderer = this.renderers[node.name];
-    if (renderer) {
-      return renderer.render(node);
-    } else {
-      return `<div style="display: inline" class="limp-unknown ${
-        node.name
-      }">${node.children.map((it) => this.render(it)).join('')}</div>`;
-    }
-  }
+  abstract role(node: LimpNodeOf<'role'>): string;
 
-  title(node: LimpNodeOf<'title'>): string {
-    return `<h${node.level}>${node.children
-      .map((it) => this.render(it))
-      .join('')}</h${node.level}>`;
-  }
+  abstract title(node: LimpNodeOf<'title'>): string;
 
-  block_role(node: LimpNodeOf<'block_role'>): string {
-    const renderer = this.renderers[node.name];
-    if (renderer) {
-      return renderer.render(node);
-    } else {
-      return `<div class="limp-unknown ${node.name}">${node.children
-        .map((it) => this.render(it))
-        .join('')}</div>`;
-    }
-  }
+  abstract block_role(node: LimpNodeOf<'block_role'>): string;
 
-  root(node: LimpNodeOf<'root'>): string {
-    return `<div class="limp-root">${node.children
-      .map((it) => this.render(it))
-      .join('')}</div>`;
-  }
+  abstract root(node: LimpNodeOf<'root'>): string;
 }
