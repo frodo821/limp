@@ -7,5 +7,7 @@ import './renderers/list';
 import './renderers/code';
 import './renderers/table';
 import './renderers/comment';
+import './renderers/quoting';
+import './renderers/details';
 
 export default renderer;
