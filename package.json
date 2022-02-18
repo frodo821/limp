@@ -8,7 +8,8 @@
     "build-browser": "npm run build-internal -- --platform=browser",
     "build-internal": "tsc --noEmit && esbuild --outfile=dist/main.js --bundle --minify src/index.ts",
     "build": "tsc -d --outDir lib",
-    "build-docs": "npm run build && node ./tools/build-documents.js"
+    "build-docs": "npm run build && node ./tools/build-documents.js",
+    "prepare": "git checkout master && npm run build"
   },
   "keywords": [
     "documentation",
