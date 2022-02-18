@@ -29,7 +29,7 @@ const DEFAULT_HTML_TEMPLATE = `<!DOCTYPE html>\
 
     const file = arg.match(/^(.*?)(?:\.[^.]+)?$/)[1];
 
-    const out = limp.compile(fs.readFileSync(arg, 'utf8'));
+    const out = limp.compileToHTML(fs.readFileSync(arg, 'utf8'));
     fs.writeFileSync(
       `${file}.html`,
       DEFAULT_HTML_TEMPLATE.replace(/(?<!\\)\$[a-z0-9_]+/gi, function (str) {
