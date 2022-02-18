@@ -980,8 +980,8 @@ a:not([href]) {
 footer {
   display: grid;
   margin: 2rem auto;
-  width: 80rem;
-  padding: 1rem 5rem;
+  max-width: 80rem;
+  width: 80vw;
   grid-auto-flow: column;
   border-top: solid 2px lightgray;
 }
@@ -1073,6 +1073,7 @@ header {
   header {
     grid-template-columns: 1fr;
     margin: 0;
+    margin-bottom: 6rem;
     padding: 0;
   }
 
@@ -1085,6 +1086,10 @@ header {
   header .header-group:not(.npm-ribon) .header-item.header-logo {
     grid-column: 1/3;
   }
+
+  footer {
+    padding: 1rem 0;
+  }
 }
 
 @media screen and (min-width: 801px) {
@@ -1094,6 +1099,10 @@ header {
 
   header {
     grid-template-columns: 35rem 1fr;
+  }
+
+  footer {
+    padding: 1rem 5rem;
   }
 }
 
