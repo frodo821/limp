@@ -4,7 +4,7 @@ export interface Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string;
 }
 
-export class LimpRenderer {
+export default class LimpRenderer {
   private static instance: LimpRenderer;
   private renderers: { [key: string]: Renderer } = {};
 
@@ -81,7 +81,3 @@ export class LimpRenderer {
       .join('')}</div>`;
   }
 }
-
-const renderer = new LimpRenderer();
-
-export default renderer;
