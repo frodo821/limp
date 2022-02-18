@@ -178,7 +178,7 @@ function main() {
   const indices = {};
 
   for (let file of files) {
-    const content = limp.compile(fs.readFileSync(file, 'utf8'));
+    const content = limp.compileToHTML(fs.readFileSync(file, 'utf8'));
     const extras = collector.getDataOnce();
     const [outPath, outDir] = getOutputPath(file, docsDir, outputDir);
 
