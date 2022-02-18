@@ -1,9 +1,9 @@
-import renderer from './render';
+import htmlRenderer from './render/html';
 import { parseDocument } from './parsing/parsing';
 
 export * from './parsing/parsing';
 export * from './parsing/strparsing';
 
-export function compile(src: string): string {
-  return renderer.render(parseDocument(src));
+export function compileToHTML(src: string): string {
+  return htmlRenderer.render(parseDocument(src));
 }

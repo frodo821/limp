@@ -1,7 +1,7 @@
-import { Renderer } from '..';
-import { LimpNodeOf } from '../../parsing/parsing';
-import { escape } from '../html/utils';
-import renderer from '../renderer';
+import { Renderer } from '../..';
+import { LimpNodeOf } from '../../../parsing/parsing';
+import { escape } from '../utils';
+import renderer from '../htmlRenderer';
 
 class CodeRoleRenderer implements Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string {

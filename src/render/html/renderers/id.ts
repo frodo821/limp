@@ -1,6 +1,6 @@
-import { Renderer } from '..';
-import { LimpNodeOf } from '../../parsing/parsing';
-import renderer from '../renderer';
+import { Renderer } from '../..';
+import { LimpNodeOf } from '../../../parsing/parsing';
+import renderer from '../htmlRenderer';
 
 class LabelRoleRenderer implements Renderer {
   render(node: LimpNodeOf<'role' | 'block_role'>): string {
