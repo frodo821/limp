@@ -292,7 +292,7 @@ function parseBlock(src: TokenStart, parent: LimpNode): LimpNode {
     nameline.replace(/([\[\]()^*+.?\\])/g, '\\$1')
   );
 
-  const block = dedent(src.matched.slice(nameAt + nameline.length + 2));
+  const block = dedent(src.matched.slice(nameAt + nameline.length + 1));
 
   const self: LimpNode = {
     type: 'block_role',
