@@ -81,7 +81,7 @@ Note you can make custom renderers and use them in your project to process your 
 ********************************
 
 :bold:Block role; is another way to mark a text with a role.
-In contrast to inline roles, block roles mark up a chunk of texts.:br:;
+In contrast to inline roles, block roles mark up a chunk of texts.
 
 For example\:
 
@@ -102,7 +102,7 @@ For example\:
       This is another example of list item.
 
 Blocks are indicated by an indentation consisting of some spaces (code point :*code:0x20;). Note tab characters are not counted and ignored when the limp parser measures the indentation level of a line.
-When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.:br:;
+When some "dedents" appear and the indentation level turned to the same or less level as the start of the block, it is the end of the block.
 
 The above example are shown like this\:
 
